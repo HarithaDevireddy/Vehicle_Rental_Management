@@ -1,4 +1,4 @@
-package com.cg.vmtoolapi.domain;
+package com.cg.vm.domain;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -7,91 +7,104 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-
+import javax.validation.constraints.Size;
 
 
 @Entity
+@Table(name = "customer")
 public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name ="cust_id")
 	private Long customerId;
-	@NotBlank(message="first name required")
-	
+
+	@NotBlank(message = "First name required")
 	private String firstname;
-	
-	@NotBlank(message="last name required")
+
+	@NotBlank(message = "Last name required")
 	private String lastname;
-	
-	@NotBlank(message="emailId required")
-	
-	@Column(unique = true)
+
+	@NotBlank(message = "Email-Id required")
+	@Column(unique = true, updatable = false)
 	private String emailId;
-	
-	@NotBlank(message="password required")
-	private String password;
-	
-	@NotBlank(message="mobile number required")
-	@Column(nullable=false,unique=true,length=10)
+
+	@NotBlank(message = "Mobile number required")
+	@Column(nullable = false)
+	@Size(min = 10, max = 10, message = "Mobile number Should Be 10 digits")
 	private String mobileNumber;
+
+	@NotBlank(message = "Address required")
+	private String address;
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, optional = false)
+	@JoinColumn(name = "user_id", nullable = false, updatable = true)
+	@Valid
 	
-	
-    private String address;
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "customer" )
-    private User user;
-    
-  
-    
-	
+	private User user;
+
+	public Customer()
+	{
+		super();
+	}
 	public User getUser() {
 		return user;
 	}
+
 	public void setUser(User user) {
 		this.user = user;
 	}
+
 	public Long getCustomerId() {
 		return customerId;
 	}
+
 	public void setCustomerId(Long customerId) {
 		this.customerId = customerId;
 	}
+
 	public String getFirstname() {
 		return firstname;
 	}
+
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
+
 	public String getLastname() {
 		return lastname;
 	}
+
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+
 	public String getEmailId() {
 		return emailId;
 	}
+
 	public void setEmailId(String emailId) {
 		this.emailId = emailId;
 	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+
 	public String getMobileNumber() {
 		return mobileNumber;
 	}
+
 	public void setMobileNumber(String mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
+
 	public String getAddress() {
 		return address;
 	}
+
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
 
 }
